@@ -8,6 +8,12 @@ The system allows users to discuss interior design concepts in natural language 
 
 ## ✨ Key Features
 
+<img width="2000" height="961" alt="image" src="https://github.com/user-attachments/assets/29e4ecb8-5f46-4e71-8446-73507a1b9849" />
+
+* **Multi-Agent ReAct agents with Chain of Thought Reasoning via Langchain**
+* **Model Context Protocol (MCP) servers for Agentic Tools**
+* **Retrieval Augmented Generation with Pinecone vector database and vector similarity search**
+* 
 * **Conversational Design Assistant**
   Natural, context-aware text-based interaction for discussing interior design ideas, requirements, and constraints.
 
