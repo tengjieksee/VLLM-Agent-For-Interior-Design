@@ -1,6 +1,6 @@
 # VLLM-Agent-For-Interior-Design
 
-**VLLM-Agent-For-Interior-Design** is an intelligent, agent-based vision–language system designed to support **end-to-end interior design workflows**. It combines open-source large language models with state-of-the-art image generation models to enable seamless conversational design exploration, ideation, and visualization.
+**VLLM-Agent-For-Interior-Design** is an intelligent, multi-agent-based vision–language chatbot system designed to support **end-to-end interior design workflows**. It combines open-source large language models with state-of-the-art image generation models to enable seamless conversational design exploration, ideation, and visualization.
 
 The system allows users to discuss interior design concepts in natural language and generate visual design proposals on demand, making it suitable for designers, architects, and AI researchers experimenting with multimodal agents.
 
@@ -22,11 +22,7 @@ Agentic tools are exposed via **Model Context Protocol (MCP)** servers implement
 
 ### 📚 Retrieval Augmented Generation (RAG) with Pinecone
 
-The assistant uses **Pinecone** as a vector database to support **semantic search and long-term memory**. Design references, style guides, prior conversations, and user preferences are embedded and retrieved using vector similarity search, enabling:
-
-* Context-aware recommendations
-* Consistency across long conversations
-* Reduced hallucinations through grounded responses
+The assistant uses **Pinecone** as a vector database to support **semantic search and long-term memory**. Design references, style guides, prior conversations, and user preferences are embedded and retrieved using vector similarity search, enabling context-aware recommendations, consistency across long conversations and reduced hallucinations through grounded responses.
 
 ---
 
