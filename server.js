@@ -1,8 +1,10 @@
 require('dotenv').config(); // Load environment variables
 const express = require('express');
 const session = require('express-session');
+const multer = require("multer");
+const path = require("path");
+const axios = require("axios"); // used for both Groq and Pixazo
 const { Groq } = require('groq-sdk');
-const fetch = require('node-fetch'); // Add fetch for image API
 const app = express();
 const PORT = 3000;
 
@@ -368,15 +370,50 @@ app.get('/', (req, res) => {
           addMessage("Hello! I'm your AI interior designer. How can I help with your space today?", false);
         });
       </script>
-    </body>
+
+      <form action="/upload" method="POST" enctype="multipart/form-data">
+        <input type="file" name="myFile" />
+        <button type="submit">Upload</button>
+      </form>
+    
+      </body>
     </html>
   `);
 });
 // ====== MODIFIED SECTION END ======
 
-// ====== NEW IMAGE GENERATION FUNCTION ======
+// ====== Upload File =======
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads/");
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + "-" + file.originalname);
+  }
+});
+
+const upload = multer({ storage });
+
+
+
+// ====== CALL MULTI AGENT FUNCTION ======
+async function callMultiAgent(query, conversation) {
+  try {
+    const response = await axios.post("http://localhost:8000/run", {
+      query,
+      conversation
+    });
+
+    return response.data.result;
+  } catch (error) {
+    throw new Error(error.response?.data?.error || error.message);
+  }
+}
+
+// ====== NEW IMAGE GENERATION FUNCTION (FIXED) ======
 async function generateImage(prompt) {
-  const url = 'https://gateway.pixazo.ai/flux-1-schnell/v1/getData';
+  const url = 'https://gateway.pixazo.ai/flux-1-schnell/v1/getData'; // Fixed URL (no trailing spaces)
   const data = {
     prompt: prompt,
     num_steps: 4,
@@ -386,24 +423,21 @@ async function generateImage(prompt) {
   };
 
   try {
-    const response = await fetch(url, {
-      method: 'POST',
+    const response = await axios.post(url, data, {
       headers: {
         'Content-Type': 'application/json',
         'Cache-Control': 'no-cache',
         'Ocp-Apim-Subscription-Key': process.env.PIXAZO_API_KEY
-      },
-      body: JSON.stringify(data)
+      }
     });
 
-    if (!response.ok) {
-      throw new Error(`Pixazo API error: ${response.status}`);
+    if (response.status !== 200) {
+      throw new Error(`Pixazo API error: ${response.status} ${JSON.stringify(response.data)}`);
     }
 
-    const result = await response.json();
-    return result.output;
+    return response.data.output;
   } catch (error) {
-    console.error('Image generation failed:', error);
+    console.error('Image generation failed:', error.response?.data || error.message);
     throw error;
   }
 }
@@ -428,19 +462,12 @@ app.post('/chat', async (req, res) => {
       content: userMessage
     });
 
-    // Call Groq API
-    const chatCompletion = await groq.chat.completions.create({
-      messages: req.session.conversation,
-      model: "openai/gpt-oss-20b", // Using a better model for instruction following
-      temperature: 0.7,
-      max_tokens: 1024,
-      top_p: 0.9,
-      stream: false
-    });
+    // Call Multi-Agent Python backend
+    let botResponse = await callMultiAgent(
+      userMessage,
+      req.session.conversation
+    );
 
-    // Get and store assistant response
-    let botResponse = chatCompletion.choices[0].message.content;
-    
     // Check if response contains image generation request
     let imageUrl = null;
     const drawRegex = /\[DRAW:\s*(.*?)\]/;
@@ -450,7 +477,7 @@ app.post('/chat', async (req, res) => {
       const imagePrompt = drawMatch[1].trim();
       
       try {
-        // Generate image
+        // Generate image using axios (not fetch)
         imageUrl = await generateImage(imagePrompt);
         
         // Clean up the response (remove the [DRAW] token)
@@ -482,7 +509,7 @@ app.post('/chat', async (req, res) => {
     });
 
   } catch (error) {
-    console.error('Groq API Error:', error.response?.data || error.message);
+    console.error('Chat API Error:', error.response?.data || error.message);
     res.status(500).json({ 
       error: 'Failed to process request',
       details: process.env.NODE_ENV === 'development' ? error.message : undefined
@@ -498,6 +525,18 @@ app.post('/reset', (req, res) => {
   req.session.conversation = initConversation();
   res.json({ status: 'Conversation reset' });
 });
+
+app.post("/upload", upload.single("myFile"), (req, res) => {
+  if (!req.file) {
+    return res.status(400).send("No file uploaded");
+  }
+
+  // req.file contains info about the uploaded file
+  console.log(req.file);
+
+  res.redirect("/"); // or wherever your app should go next
+});
+
 
 // Static files middleware MOVED TO END
 app.use(express.static('public'));

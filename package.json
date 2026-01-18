@@ -1,9 +1,21 @@
 {
   "dependencies": {
+    "@langchain/core": "^1.1.12",
+    "@langchain/groq": "^1.0.2",
+    "@langchain/mcp-adapters": "^1.1.1",
+    "@modelcontextprotocol/sdk": "^1.25.2",
+    "axios": "^1.13.2",
+    "chromadb": "^3.2.2",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
+    "express-fileupload": "^1.5.2",
     "express-session": "^1.18.2",
-    "groq-sdk": "^0.37.0"
+    "groq-sdk": "^0.37.0",
+    "langchain": "^1.2.7",
+    "mammoth": "^1.11.0",
+    "multer": "^2.0.2",
+    "node-fetch": "^3.3.2",
+    "pdf-parse": "^2.4.5"
   },
   "name": "chatbot-app",
   "version": "1.0.0",
