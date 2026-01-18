@@ -126,9 +126,11 @@ You can obtain API keys from:
 
 ### 4. Launch the Web Application
 
-Start the server with:
+Start the servers with:
 
 ```bash
+python -m uvicorn backend_multi_agent:app --host 0.0.0.0 --port 8000 --reload
+python tools_mcp_server.py
 node server.js
 ```
 
