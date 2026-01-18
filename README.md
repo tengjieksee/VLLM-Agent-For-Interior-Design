@@ -1,6 +1,6 @@
-# VLLM-Agent-For-Interior-Design
+# Vision LLM Multi-Agent for Interior Design
 
-**VLLM-Agent-For-Interior-Design** is an intelligent, multi-agent-based vision–language chatbot system designed to support **end-to-end interior design workflows**. It combines open-source large language models with state-of-the-art image generation models to enable seamless conversational design exploration, ideation, and visualization.
+**Vision LLM Multi-Agent for Interior Design** is an intelligent, multi-agent-based vision–language chatbot system designed to support **end-to-end interior design workflows**. It combines open-source large language models with state-of-the-art image generation models to enable seamless conversational design exploration, ideation, and visualization.
 
 The system allows users to discuss interior design concepts in natural language and generate visual design proposals on demand, making it suitable for designers, architects, and AI researchers experimenting with multimodal agents.
 
