@@ -16,13 +16,13 @@ The system is built on a **multi-agent ReAct (Reason + Act) framework** using **
 
 ### 🔌 Model Context Protocol (MCP) Servers with FastMCP
 
-Agentic tools are exposed via **Model Context Protocol (MCP)** servers implemented using **FastMCP**. This allows tools (retrieval, image generation, memory, etc.) to be dynamically discovered and invoked by agents in a standardized way, ensuring clean separation between reasoning and execution while making the system easy to extend.
+Agentic tools are exposed via **Model Context Protocol (MCP)** servers implemented using **FastMCP**. This allows tools (e.g. retrieval, memory, etc.) to be dynamically discovered and invoked by agents in a standardized way, ensuring clean separation between reasoning and execution while making the system easy to extend.
 
 ---
 
 ### 📚 Retrieval Augmented Generation (RAG) with Pinecone
 
-The assistant uses **Pinecone** as a vector database to support **semantic search and long-term memory**. Design references, style guides, prior conversations, and user preferences are embedded and retrieved using vector similarity search, enabling context-aware recommendations, consistency across long conversations and reduced hallucinations through grounded responses.
+The assistant uses **Pinecone** as a vector database to support **semantic search and document retrieval**. Design references, style guides, prior conversations, and user preferences are embedded and retrieved using vector similarity search, enabling context-aware recommendations, consistency across long conversations and reduced hallucinations through grounded responses.
 
 ---
 
@@ -59,7 +59,7 @@ Interior visuals are generated using **FLUX Schnell Diffusion** through the **Pi
 
 ### 🧩 Modular Agent-Based System Design
 
-The architecture follows a **VLLM-style agentic design**, where each capability is encapsulated as an independent module. This makes it easy to:
+The architecture follows a **LLM agentic design**, where each capability is encapsulated as an independent module. This makes it easy to:
 
 * Add new tools or agents
 * Swap models or APIs
@@ -85,7 +85,7 @@ The combination of MCP, RAG, multi-agent reasoning, and modular design makes thi
 ## 🧱 System Architecture (High-Level)
 
 * **Frontend**: Web-based UI for chat and image display
-* **Backend**: Node.js server orchestrating agent logic
+* **Backend**: Node.js server orchestrating agent logic, MCP.py server allowing MCP tools for agents
 * **LLM Provider**: GPT-OSS via Groq API
 * **Image Generation**: FLUX Schnell Diffusion via Pixazo API
 
@@ -123,6 +123,7 @@ You can obtain API keys from:
 
 * Groq: [https://groq.com/](https://groq.com/)
 * Pixazo: [https://www.pixazo.ai](https://www.pixazo.ai)
+* PineCone: [https://www.pinecone.io/](https://www.pinecone.io/)
 
 ### 4. Launch the Web Application
 
@@ -177,4 +178,5 @@ This project is open-source. Please check the repository for license details.
 
 * Groq for high-performance LLM inference
 * Pixazo for diffusion-based image generation
+* PineCone for vector database
 * Open-source VLLM and agent research communities
